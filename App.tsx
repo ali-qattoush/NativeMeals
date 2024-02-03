@@ -1,10 +1,10 @@
 import React from "react";
 import { View } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import Banner from "./Banner";
+import Banner from "./Views/Banner";
 import styles from "./styles";
-import { CartProvider } from "./CartContext";
-import FoodList from "./FoodList";
+import { CartProvider } from "./store/CartContext";
+import FoodList from "./Views/FoodList";
 
 const App = () => {
   const foodList = [

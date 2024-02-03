@@ -1,8 +1,8 @@
 import React, { useState, useContext } from "react";
 import { Text, View, TouchableOpacity, Modal } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import CartContext from "./CartContext";
-import styles from "./styles";
+import CartContext from "../store/CartContext";
+import styles from "../styles";
 
 const Banner: React.FC = () => {
   const [isModalVisible, setModalVisible] = useState(false);

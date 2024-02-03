@@ -1,7 +1,8 @@
 import React, { useContext, useState } from "react";
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
-import CartContext from "./CartContext";
-import styles from "./styles";
+import CartContext from "../store/CartContext";
+import styles from "../styles";
+import { ADD, UPDATE } from "../store/sharedTypes";
 
 type FoodItem = {
   name: string;
@@ -17,13 +18,15 @@ type InputValue = {
   [key: string]: number;
 };
 
+const stateList = {
+  "Classic Burger": 0,
+  "Vegetarian Sushi Roll": 0,
+  "Chicken Caesar Salad": 0,
+  "Margherita Pizza": 0,
+};
+
 const FoodList: React.FC<FoodListProps> = ({ foods }) => {
-  const [inputValue, setInputValue] = useState<InputValue>({
-    "Classic Burger": 0,
-    "Vegetarian Sushi Roll": 0,
-    "Chicken Caesar Salad": 0,
-    "Margherita Pizza": 0,
-  });
+  const [inputValue, setInputValue] = useState<InputValue>(stateList);
   // identifier/displayer for amount.
 
   const { state, dispatch } = useContext(CartContext) ?? {
@@ -34,13 +37,13 @@ const FoodList: React.FC<FoodListProps> = ({ foods }) => {
 
   function amountHandler(text: string, name: string) {
     const value = parseInt(text);
-    if (value >= 1) {
+    if (value >= 0) {
       setInputValue((prevInputValue) => ({
         ...prevInputValue,
         [name]: value,
       }));
     }
-    /* If the inputed amount is less than 1, 
+    /* If the inputed amount is less than 0, 
     dont change the state, otherwise save it in the state */
   }
 
@@ -55,12 +58,7 @@ const FoodList: React.FC<FoodListProps> = ({ foods }) => {
     };
     // save the value which add press came from.
 
-    setInputValue({
-      "Classic Burger": 0,
-      "Vegetarian Sushi Roll": 0,
-      "Chicken Caesar Salad": 0,
-      "Margherita Pizza": 0,
-    });
+    setInputValue(stateList);
     // reset the values, for the next added food.
 
     let foundMatch = false;
@@ -68,7 +66,7 @@ const FoodList: React.FC<FoodListProps> = ({ foods }) => {
     state.forEach((item) => {
       if (item.name === foodOrder.name) {
         dispatch({
-          type: "UPDATE",
+          type: UPDATE,
           payload: {
             ...foodOrder,
           },
@@ -79,7 +77,7 @@ const FoodList: React.FC<FoodListProps> = ({ foods }) => {
     // if it already exists in the cart, then its an update process.
 
     if (!foundMatch) {
-      dispatch({ type: "ADD", payload: { ...foodOrder } });
+      dispatch({ type: ADD, payload: { ...foodOrder } });
     }
     // if it doesnt exist in the cart, add it.
   }

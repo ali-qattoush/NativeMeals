@@ -3,6 +3,7 @@ import { Text, View, TouchableOpacity, Modal } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import CartContext from "../store/CartContext";
 import styles from "../styles";
+import { UPDATE, DELETE } from "../store/sharedTypes";
 
 const Banner: React.FC = () => {
   const [isModalVisible, setModalVisible] = useState(false);
@@ -20,14 +21,14 @@ const Banner: React.FC = () => {
   };
 
   const incrementQuantity = (index: number) => {
-    dispatch({ type: "UPDATE", payload: { ...state[index], amount: 1 } });
+    dispatch({ type: UPDATE, payload: { ...state[index], amount: 1 } });
   };
   // fetch the index, specified by .map to identify food.
 
   const decrementQuantity = (index: number) => {
     if (state[index].amount === 1)
-      dispatch({ type: "DELETE", payload: { ...state[index] } });
-    dispatch({ type: "UPDATE", payload: { ...state[index], amount: -1 } });
+      dispatch({ type: DELETE, payload: { ...state[index] } });
+    dispatch({ type: UPDATE, payload: { ...state[index], amount: -1 } });
   };
 
   const calculateTotal = () => {

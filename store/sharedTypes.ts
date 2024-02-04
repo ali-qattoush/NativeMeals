@@ -1,7 +1,3 @@
-export const ADD = "ADD";
-export const UPDATE = "UPDATE";
-export const DELETE = "DELETE";
-
 export type Food = {
   name: string;
   price: number;
@@ -9,7 +5,16 @@ export type Food = {
 };
 
 export type Action =
-  | { type: typeof ADD; payload: Food }
-  | { type: typeof UPDATE; payload: { name: string; amount: number } }
-  | { type: typeof DELETE; payload: { name: string } };
+  | { type: "ADD"; payload: Food }
+  | { type: "UPDATE"; payload: { name: string; amount: number } }
+  | { type: "DELETE"; payload: { name: string } };
 
+export const dispatchMap = new Map<string, (payload: any) => Action>([
+  ["UPDATE", (payload: any) => ({ type: "UPDATE", payload })],
+  ["ADD", (payload: any) => ({ type: "ADD", payload })],
+  ["DELETE", (payload: any) => ({ type: "DELETE", payload })],
+]);
+
+export const updateDispatcher = dispatchMap.get("UPDATE");
+export const addDispatcher = dispatchMap.get("ADD");
+export const deleteDispatcher = dispatchMap.get("DELETE");

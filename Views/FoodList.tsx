@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import CartContext from "../store/CartContext";
 import styles from "../styles";
-import { ADD, UPDATE } from "../store/sharedTypes";
+import { updateDispatcher, addDispatcher } from "../store/sharedTypes";
 
 type FoodItem = {
   name: string;
@@ -65,19 +65,18 @@ const FoodList: React.FC<FoodListProps> = ({ foods }) => {
 
     state.forEach((item) => {
       if (item.name === foodOrder.name) {
-        dispatch({
-          type: UPDATE,
-          payload: {
-            ...foodOrder,
-          },
-        });
-        foundMatch = true;
+        if (updateDispatcher) {
+          dispatch(updateDispatcher({ ...foodOrder }));
+          foundMatch = true;
+        }
       }
     });
     // if it already exists in the cart, then its an update process.
 
     if (!foundMatch) {
-      dispatch({ type: ADD, payload: { ...foodOrder } });
+      if (addDispatcher) {
+        dispatch(addDispatcher({ ...foodOrder }));
+      }
     }
     // if it doesnt exist in the cart, add it.
   }
